@@ -73,11 +73,7 @@ impl PluginCommand for Command {
                         state = value.clone();
                     }
 
-                    if let Some(out_value) = record.get("out") {
-                        Some(out_value.clone())
-                    } else {
-                        None
-                    }
+                    record.get("out").cloned()
                 }
                 Err(err) => Some(Value::error(err, span)),
             }
