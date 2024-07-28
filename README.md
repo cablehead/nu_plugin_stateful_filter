@@ -1,6 +1,28 @@
 Status: proof of concept
 
-This is a Nushell plugin to support stateful filtering.
+```nushell
+Run closure on each element of a list
+
+Usage:
+  > stateful filter <initial> <closure>
+
+Flags:
+  -h, --help - Display the help message for this command
+
+Parameters:
+  initial <any>: The initial state to pass to the closure
+  closure <closure(any, any)>:
+    The closure receives `|state, value|`, and should return a
+    record in the shape: { out?: value, state?: new_state }. Both
+    out and state are optional. You can drop rows by ommiting the
+    `out` key, and the current state is preserved if its key is
+    omitted.
+
+Input/output types:
+  ─#─┬────input────┬───output────
+   0 │ list-stream │ list-stream
+  ───┴─────────────┴─────────────
+```
 
 It's similar to the
 [`generate`](https://www.nushell.sh/commands/docs/generate.html#generate-for-generators)

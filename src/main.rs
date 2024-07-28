@@ -42,7 +42,10 @@ impl PluginCommand for Command {
             .required(
                 "closure",
                 SyntaxShape::Closure(Some(vec![SyntaxShape::Any, SyntaxShape::Any])),
-                "The closure to evaluate",
+                "The closure receives `|state, value|`, and should return
+                a record in the shape: { out?: value, state?: new_state }. Both out and state are
+                optional. You can drop rows by ommiting the `out` key, and the current state is
+                preserved if its key is omitted.",
             )
     }
 
