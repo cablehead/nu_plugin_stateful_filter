@@ -93,6 +93,13 @@ impl PluginCommand for MyEach {
             let span = item.span();
             engine
                 .eval_closure(&closure, vec![state.clone(), item.clone()], Some(item))
+                .and_then(|value| {
+                    let record = value.into_record()?;
+                    if let Some(value) = record.get("state") {
+                        state = value.clone();
+                    }
+                    Ok(Value::record(record, span))
+                })
                 .unwrap_or_else(|err| Value::error(err, span))
         });
 
