@@ -14,13 +14,13 @@ impl nu_plugin::Plugin for Plugin {
     }
 
     fn commands(&self) -> Vec<Box<dyn PluginCommand<Plugin = Self>>> {
-        vec![Box::new(MyEach)]
+        vec![Box::new(Command)]
     }
 }
 
-struct MyEach;
+struct Command;
 
-impl PluginCommand for MyEach {
+impl PluginCommand for Command {
     type Plugin = Plugin;
 
     fn name(&self) -> &str {
