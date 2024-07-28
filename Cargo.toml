@@ -1,0 +1,8 @@
+[package]
+name = "nu_plugin_stateful_filter"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+nu-plugin = "0.96"
+nu-protocol = { version = "0.96", features = ["plugin"] }
