@@ -45,7 +45,7 @@ Outputs:
 
 ## Usage
 
-```nushell
+```
 Run closure on each element of a list
 
 Usage:
