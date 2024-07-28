@@ -12,11 +12,10 @@ Flags:
 Parameters:
   initial <any>: The initial state to pass to the closure
   closure <closure(any, any)>:
-    The closure receives `|state, value|`, and should return a
-    record in the shape: { out?: value, state?: new_state }. Both
-    out and state are optional. You can drop rows by ommiting the
-    `out` key, and the current state is preserved if its key is
-    omitted.
+    The closure receives `|state, value|` and should return a record in the
+    shape: { out?: value, state?: new_state }. Both `out` and `state` are
+    optional. You can drop rows by omitting the `out` key, and the current
+    state is preserved if its key is omitted.
 
 Input/output types:
   ─#─┬────input────┬───output────
@@ -31,8 +30,8 @@ process an input pipeline.
 
 It's also similar to the
 [`reduce`](https://www.nushell.sh/commands/docs/reduce.html) command, but it
-preserves the pipeline, allowing streaming. With `reduce`, you would
-accumulate a list in memory.
+preserves the pipeline, allowing streaming. With `reduce`, you would accumulate
+a list in memory.
 
 ```nushell
 let messages = [
