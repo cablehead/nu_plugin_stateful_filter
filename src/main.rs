@@ -55,10 +55,8 @@ impl PluginCommand for Command {
     ) -> Result<PipelineData, LabeledError> {
         let engine = engine.clone();
 
-        let initial: Value = call.req(0)?;
+        let mut state: Value = call.req(0)?;
         let closure = call.req(1)?;
-
-        let mut state = initial;
 
         let pipeline = input.into_iter().filter_map(move |item| {
             let span = item.span();
