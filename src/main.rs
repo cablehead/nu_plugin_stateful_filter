@@ -89,31 +89,28 @@ impl PluginCommand for MyEach {
 
         let mut state = initial;
 
-        let pipeline = input.into_iter().map(move |item| {
+        let pipeline = input.into_iter().filter_map(move |item| {
             let span = item.span();
-            engine
-                .eval_closure(&closure, vec![state.clone(), item.clone()], Some(item))
-                .and_then(|value| {
-                    let record = value.into_record()?;
+            match engine.eval_closure(&closure, vec![state.clone(), item.clone()], Some(item)) {
+                Ok(value) => {
+                    let record = match value.into_record() {
+                        Ok(record) => record,
+                        Err(err) => return Some(Value::error(err, span)),
+                    };
+
                     if let Some(value) = record.get("state") {
                         state = value.clone();
                     }
-                    Ok(Value::record(record, span))
-                })
-                .unwrap_or_else(|err| Value::error(err, span))
-        });
 
-        /*
-        Ok(input.map(
-            move |item| {
-                let span = item.span();
-                engine
-                    .eval_closure(&closure, vec![state.clone(), item.clone()], Some(item))
-                    .unwrap_or_else(|err| Value::error(err, span))
-            },
-            &Signals::empty(),
-        )?)
-        */
+                    if let Some(out_value) = record.get("out") {
+                        Some(out_value.clone())
+                    } else {
+                        None
+                    }
+                }
+                Err(err) => Some(Value::error(err, span)),
+            }
+        });
 
         Ok(pipeline.into_pipeline_data(call.head, Signals::empty()))
     }
