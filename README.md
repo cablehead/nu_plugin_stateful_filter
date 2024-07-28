@@ -1,17 +1,16 @@
 Status: proof of concept
 
-This is is Nushell plugin to support stateful filtering.
+This is a Nushell plugin to support stateful filtering.
 
 It's similar to the
 [`generate`](https://www.nushell.sh/commands/docs/generate.html#generate-for-generators)
-command, but instead of generating a pipeline with no input it allows you to
+command, but instead of generating a pipeline with no input, it allows you to
 process an input pipeline.
 
 It's also similar to the
 [`reduce`](https://www.nushell.sh/commands/docs/reduce.html) command, but it
-preserves the pipeline, allowing streaming, while with reduce you would
-accumlate a list in memory.
-
+preserves the pipeline, allowing streaming. With `reduce`, you would
+accumulate a list in memory.
 
 ```nushell
 let messages = [
