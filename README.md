@@ -22,6 +22,9 @@ let messages = [
     { type: "data", value: 5 }
 ]
 
+# output the last message seen before encountering a “threshold” message,
+# then output all subsequent messages in real time
+
 $messages | each {|x| sleep 1sec; $x } | stateful filter {found: false} { |state, x|
     if $state.found {
         return { out: $x }
