@@ -61,24 +61,29 @@ impl PluginCommand for Command {
         let mut state: Value = call.req(0)?;
         let closure = call.req(1)?;
 
-        let pipeline = input.into_iter().filter_map(move |item| {
-            let span = item.span();
-            match engine.eval_closure(&closure, vec![state.clone(), item.clone()], Some(item)) {
-                Ok(value) => {
-                    let record = match value.into_record() {
-                        Ok(record) => record,
-                        Err(err) => return Some(Value::error(err, span)),
-                    };
+        let pipeline = input
+            .into_iter()
+            // append a nothing value to the end of the stream to give the closure a chance to
+            // values once the stream is exhausted
+            .chain(std::iter::once(Value::nothing(call.head)))
+            .filter_map(move |item| {
+                let span = item.span();
+                match engine.eval_closure(&closure, vec![state.clone(), item.clone()], None) {
+                    Ok(value) => {
+                        let record = match value.into_record() {
+                            Ok(record) => record,
+                            Err(err) => return Some(Value::error(err, span)),
+                        };
 
-                    if let Some(value) = record.get("state") {
-                        state = value.clone();
+                        if let Some(value) = record.get("state") {
+                            state = value.clone();
+                        }
+
+                        record.get("out").cloned()
                     }
-
-                    record.get("out").cloned()
+                    Err(err) => Some(Value::error(err, span)),
                 }
-                Err(err) => Some(Value::error(err, span)),
-            }
-        });
+            });
 
         Ok(pipeline.into_pipeline_data(call.head, Signals::empty()))
     }
