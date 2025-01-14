@@ -1,4 +1,22 @@
-Status: sketching
+## Status: archived
+
+[Thanks](https://github.com/nushell/nushell/pull/14804) to @Bahex, Nushell's built-in [`generate`](https://www.nushell.sh/commands/docs/generate.html#generate-for-generators) command [now](https://github.com/nushell/nushell/pull/14804) supports this functionality.
+
+```nushell
+$messages
+| each {|x| sleep 1sec; $x }
+| generate {|x, state={found: false, last: null}|
+    if $state.found {
+        { out: $x, next: $state }
+    } else if $x.type == "threshold" {
+        { out: $state.last, next: {found: true, last: null} }
+    } else {
+        { next: {found: false, last: $x} }
+    }
+}
+```
+
+## the sketch
 
 It's similar to the
 [`generate`](https://www.nushell.sh/commands/docs/generate.html#generate-for-generators)
