@@ -1,6 +1,6 @@
 ## Status: archived
 
-[Thanks](https://github.com/nushell/nushell/pull/14804) to @Bahex, Nushell's built-in [`generate`](https://www.nushell.sh/commands/docs/generate.html#generate-for-generators) command [now](https://github.com/nushell/nushell/pull/14804) supports this functionality.
+[Thanks](https://github.com/nushell/nushell/pull/14804) to [@Bahex](https://github.com/Bahex), Nushell's built-in [`generate`](https://www.nushell.sh/commands/docs/generate.html#generate-for-generators) command [now](https://github.com/nushell/nushell/pull/14804) supports this functionality.
 
 ```nushell
 $messages
